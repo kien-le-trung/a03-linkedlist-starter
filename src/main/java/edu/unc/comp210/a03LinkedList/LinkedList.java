@@ -22,7 +22,10 @@ public class LinkedList {
      * @param list2 - list to be merged
      */
     public void simpleMerge(LinkedList list2) {
-        //TODO
+        list2._tail.setNext(this._head);
+        this._head = list2._head;
+        this._size += list2._size;
+        list2.clear();
     }
 
     /**
@@ -39,8 +42,18 @@ public class LinkedList {
      * @param i    - index of node to remove
      */
     public void removeAtIndex(int i) {
-        // TODO
+        if (i < 0 || i >= _size) {
+            throw new IndexOutOfBoundsException("Index is invalid");
+        }
 
+        int j = 0;
+        Node curr = this._head;
+        while (j < i-1) { //traverse to the node before i
+            curr = curr.getNext();
+            j++;
+        }
+        curr.setNext(curr.getNext().getNext());
+        this._size = this._size - 1;
     }
 
     /**
@@ -60,9 +73,23 @@ public class LinkedList {
      * @return true if the lists have the same elements in the same order, false otherwise
      */
     public boolean isEqual(LinkedList list2) {
-        // TODO
+        if (this._size != list2._size) {
+            return false;
+        }
 
-        return false;    // Change this statement as required
+        Node currThis = this._head;
+        Node currThat = list2._head;
+
+        while (currThis != null && currThat != null) {
+            if (currThis.getValue() != currThat.getValue()) {
+                return false;
+            }
+
+            currThis = currThis.getNext();
+            currThat = currThat.getNext();
+        }
+
+        return true;
     }
 
     /**
@@ -73,8 +100,22 @@ public class LinkedList {
      *
      */
     public void removeRepeats() {
-        // TODO
-
+        if (this._size <= 1) {
+            return; // nothing to remove
+        }
+        Node curr = this._head;
+        Node next = this._head.getNext();
+        int removing = 0;
+        while (curr.getValue() != next.getValue()) {
+            next = next.getNext();
+            curr = curr.getNext();
+        }
+        while (curr.getValue() == next.getValue()) {
+            next =  next.getNext();
+            removing++;
+        }
+        curr.setNext(next);
+        this._size -= removing;
     }
 
      /**
@@ -84,7 +125,21 @@ public class LinkedList {
      * list after reverse: 7 -> 8 -> 9 -> 10
      */
     public void reverse() {
-        // TODO
+        if (this._size <= 1) {
+            return;
+        }
+
+        Node prev = null;
+        Node curr = this._head;
+        this._tail = this._head;
+        while (curr != null) {
+            Node next = curr.getNext();
+            curr.setNext(prev);
+            prev = curr;
+            curr = next;
+        }
+
+        this._head = prev;
     }
 
     /**
@@ -107,7 +162,22 @@ public class LinkedList {
      * @param list2 - list to interleave into the current list
      */
     public void merge(LinkedList list2) {
-        // TODO
+        Node currThis = this._head;
+        Node currThat = list2._head;
+        this._head = currThat;
+
+        while (currThat != null) {
+            Node nextThat = currThat.getNext();
+            Node nextThis = currThis.getNext();
+            currThat.setNext(currThis);
+            if (nextThat != null) {
+                currThis.setNext(nextThat);
+            } else {
+                currThis.setNext(nextThis);
+            }
+            currThis = nextThis;
+            currThat = nextThat;
+        }
     }
 
 
