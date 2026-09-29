@@ -23,8 +23,15 @@ public class LinkedList {
      */
     public void simpleMerge(LinkedList list2) {
         if (list2 == null) {return;}
-        list2._tail.setNext(this._head);
-        this._head = list2._head;
+
+        if (this._size == 0) {
+            this._head = list2._head;
+            this._tail = list2._tail;
+        } else {
+            list2._tail.setNext(this._head);
+            this._head = list2._head;
+        }
+
         this._size += list2._size;
         list2.clear();
     }
@@ -47,6 +54,16 @@ public class LinkedList {
             throw new IndexOutOfBoundsException("Index is invalid");
         }
 
+        if (i == 0) {
+            _head = _head.getNext();
+            _size--;
+
+            if (_size == 0) {
+                _tail = null;
+            }
+            return;
+        }
+
         int j = 0;
         Node curr = this._head;
         while (j < i-1) { //traverse to the node before i
@@ -54,9 +71,8 @@ public class LinkedList {
             j++;
         }
         curr.setNext(curr.getNext().getNext());
-        // set tail pointer if needed
         if (i == _size - 1) {
-            this._tail = curr.getNext();
+            this._tail = curr;
         }
         this._size = this._size - 1;
     }
@@ -111,8 +127,13 @@ public class LinkedList {
         Node curr = this._head;
         while (curr != null && curr.getNext() != null) {
             if (curr.getValue() == curr.getNext().getValue()) {
-                curr.setNext(curr.getNext().getNext());
+                Node removed = curr.getNext();
+                curr.setNext(removed.getNext());
                 this._size--;
+
+                if (removed == _tail) {
+                    _tail = curr;
+                }
             } else {
                 curr = curr.getNext();
             }
