@@ -22,6 +22,7 @@ public class LinkedList {
      * @param list2 - list to be merged
      */
     public void simpleMerge(LinkedList list2) {
+        if (list2 == null) {return;}
         list2._tail.setNext(this._head);
         this._head = list2._head;
         this._size += list2._size;
@@ -53,6 +54,10 @@ public class LinkedList {
             j++;
         }
         curr.setNext(curr.getNext().getNext());
+        // set tail pointer if needed
+        if (i == _size - 1) {
+            this._tail = curr.getNext();
+        }
         this._size = this._size - 1;
     }
 
@@ -104,18 +109,14 @@ public class LinkedList {
             return; // nothing to remove
         }
         Node curr = this._head;
-        Node next = this._head.getNext();
-        int removing = 0;
-        while (curr.getValue() != next.getValue()) {
-            next = next.getNext();
-            curr = curr.getNext();
+        while (curr != null && curr.getNext() != null) {
+            if (curr.getValue() == curr.getNext().getValue()) {
+                curr.setNext(curr.getNext().getNext());
+                this._size--;
+            } else {
+                curr = curr.getNext();
+            }
         }
-        while (curr.getValue() == next.getValue()) {
-            next =  next.getNext();
-            removing++;
-        }
-        curr.setNext(next);
-        this._size -= removing;
     }
 
      /**
@@ -178,6 +179,8 @@ public class LinkedList {
             currThis = nextThis;
             currThat = nextThat;
         }
+
+        list2.clear();
     }
 
 
