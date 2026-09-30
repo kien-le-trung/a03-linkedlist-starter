@@ -22,7 +22,7 @@ public class LinkedList {
      * @param list2 - list to be merged
      */
     public void simpleMerge(LinkedList list2) {
-        if (list2 == null) {return;}
+        if (list2._size == 0) {return;}
 
         if (this._size == 0) {
             this._head = list2._head;
@@ -201,6 +201,7 @@ public class LinkedList {
             currThat = nextThat;
         }
 
+        this._size += list2._size;
         list2.clear();
     }
 
