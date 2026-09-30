@@ -184,6 +184,8 @@ public class LinkedList {
      * @param list2 - list to interleave into the current list
      */
     public void merge(LinkedList list2) {
+        if (list2._size == 0) {return;}
+
         Node currThis = this._head;
         Node currThat = list2._head;
         this._head = currThat;
